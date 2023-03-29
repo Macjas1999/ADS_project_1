@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "az11UmdJfjmR7mbSqK6VqzHgEn7yVWoJgkokxV6ExvT86ywSNwHD9wO7+uD3tKSnBigtUD6MHAZy2m7dvuaCBA==",
+  "success": true,
+  "projectFilePath": "/home/maciej/Desktop/C#/AlgorSemLet/AlgorSemLet.csproj",
+  "expectedPackageFiles": [
+    "/home/maciej/.nuget/packages/csvhelper/30.0.1/csvhelper.30.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
