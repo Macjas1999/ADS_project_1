@@ -11,13 +11,13 @@ namespace InitMain
 {
     class Program
     {
-        static int countOperations;
-        static int numIter = 100;
-        // static int ;
+        static long countOperations;
+        static long numIter = 50;
+        // static long ;
         static void Main(string[] args)
         {
             
-            TestObject testArrayOne = new TestObject(2684354);// Task required 2^28 = 268435456
+            TestObject testArrayOne = new TestObject(268435456);// Task required 2^28 = 268435456
 
             CsvHandler handler = new CsvHandler("output.csv");
             handler.appendNext("LMaxI,LMaxT,LAvgI,LAvgT,BMaxI,BMaxT,BAvgI");
@@ -25,7 +25,7 @@ namespace InitMain
             
             Console.WriteLine("  LMaxI |    LMaxT  |  LAvgI |   LAvgT   | BMaxI|   BMaxT   | BAvgI|   BAvgT   |");
 
-            for (int arraySize = testArrayOne.array.Length; arraySize <= arraySize*10; arraySize += arraySize) 
+            for (long arraySize = testArrayOne.array.Length; arraySize <= arraySize*10; arraySize += arraySize) 
             {
                 linearMaxInstr(testArrayOne, handler);
                 linearMaxTime(testArrayOne, numIter, handler);
@@ -45,9 +45,9 @@ namespace InitMain
 
         ////Search functions
         //Linear
-        static bool searchLinearGeneric(int[] vector, int searchTarget)
+        static bool searchLinearGeneric(long[] vector, long searchTarget)
         {
-            for (int i = 0; i < vector.Length; i++)
+            for (long i = 0; i < vector.Length; i++)
             {
                 if (vector[i] == searchTarget)
                     return true;
@@ -55,22 +55,24 @@ namespace InitMain
             return false; 
         }
         //Linear with instrumentation
-        static bool searchLinearInst(int[] vector, int searchTarget)
+        static bool searchLinearInst(long[] vector, long searchTarget)
         {
-            for (int i = 0; i < vector.Length; i++)
+            for (long i = 0; i < vector.Length; i++)
             {
                 countOperations++;
                 if (vector[i] == searchTarget)
+                {
                     return true;
+                }
             }
             return false; 
         }
         // Binary
-        static bool searchBinaryGeneric(int[] vector, int searchTarget)
+        static bool searchBinaryGeneric(long[] vector, long searchTarget)
         {
-            int left = 0;
-            int right = vector.Length - 1;
-            int middle;
+            long left = 0;
+            long right = vector.Length - 1;
+            long middle;
 
             while (left <= right)
             {
@@ -91,11 +93,11 @@ namespace InitMain
             return false;
         }
         // Binary with instrumentation
-        static bool searchBinaryInst(int[] vector, int searchTarget)
+        static bool searchBinaryInst(long[] vector, long searchTarget)
         {
-            int left = 0;
-            int right = vector.Length - 1;
-            int middle;
+            long left = 0;
+            long right = vector.Length - 1;
+            long middle;
 
             while (left <= right)
             {
@@ -127,15 +129,15 @@ namespace InitMain
          Console.Write(/*"\t" +*/ countOperations.ToString("F2") +" |");
          handler.appendNext(countOperations.ToString("F2"));
         }
-        static void linearMaxTime(TestObject targetObj, int numIter, CsvHandler handler)
+        static void linearMaxTime(TestObject targetObj, long numIter, CsvHandler handler)
         {
             double elapSeconds;
             //long elapTime = 0;
-            long minTime = long.MaxValue; //targetObj.array[0];
+            long mlongime = long.MaxValue; //targetObj.array[0];
             long maxTime = long.MinValue; //targetObj.array[targetObj.array.Length - 1];
             long iterationElapTime;
 
-            for (int n = 0; n < (numIter); ++n)
+            for (long n = 0; n < (numIter); ++n)
             {
                 long startTime = Stopwatch.GetTimestamp();
                 // Insert function 
@@ -143,7 +145,7 @@ namespace InitMain
                 long endTime = Stopwatch.GetTimestamp();
                 iterationElapTime = endTime - startTime;
                 //elapTime += iterationElapTime;
-                if (iterationElapTime < minTime) minTime = iterationElapTime;
+                if (iterationElapTime < mlongime) mlongime = iterationElapTime;
                 if (iterationElapTime > maxTime) maxTime = iterationElapTime; 
             }   
             //Insert export to csv
@@ -160,15 +162,15 @@ namespace InitMain
             Console.Write(/*"\t" +*/ countOperations.ToString("F2") +" |");
             handler.appendNext(countOperations.ToString("F2"));
         }
-        static void binaryMaxTime(TestObject targetObj, int numIter, CsvHandler handler)
+        static void binaryMaxTime(TestObject targetObj, long numIter, CsvHandler handler)
         {
             double elapSeconds;
             //long elapTime = 0;
-            long minTime = long.MaxValue; //targetObj.array[0];
+            long mlongime = long.MaxValue; //targetObj.array[0];
             long maxTime = long.MinValue; //targetObj.array[targetObj.array.Length - 1];
             long iterationElapTime;
 
-            for (int n = 0; n < (numIter); ++n)
+            for (long n = 0; n < (numIter); ++n)
             {
                 long startTime = Stopwatch.GetTimestamp();
                 // Insert function 
@@ -176,7 +178,7 @@ namespace InitMain
                 long endTime = Stopwatch.GetTimestamp();
                 iterationElapTime = endTime - startTime;
                 //elapTime += iterationElapTime;
-                if (iterationElapTime < minTime) minTime = iterationElapTime;
+                if (iterationElapTime < mlongime) mlongime = iterationElapTime;
                 if (iterationElapTime > maxTime) maxTime = iterationElapTime; 
             }   
             //Insert export to csv
@@ -192,7 +194,7 @@ namespace InitMain
         {
             countOperations = 0;
             bool present;
-            for (int i = 0; i < targetObj.array.Length; i++)
+            for (long i = 0; i < targetObj.array.Length; i++)
             {
                 present = searchLinearInst(targetObj.array, i);
             }
@@ -200,13 +202,13 @@ namespace InitMain
             handler.appendNext(((double)countOperations / (double)targetObj.array.Length).ToString("F2"));
         }
 
-        static void linearAvgTime(TestObject targetObject, int numIter, CsvHandler handler)
+        static void linearAvgTime(TestObject targetObject, long numIter, CsvHandler handler)
         {
             double meanSeconds;
             double sumTime = 0;
             long iterationElapTime;
 
-            for(int n = 0; n < (numIter); ++n)
+            for(long n = 0; n < (numIter); ++n)
             {
         
                 long startTime = Stopwatch.GetTimestamp();
@@ -225,20 +227,20 @@ namespace InitMain
         {
             countOperations = 0;
             bool present;
-            for (int i = 0; i < targetObj.array.Length; i++)
+            for (long i = 0; i < targetObj.array.Length +1; i++)
             {
                 present = searchBinaryInst(targetObj.array, i);
             }
             Console.Write(/*"\t" +*/ ((double)countOperations / (double)targetObj.array.Length).ToString("F2") +" |");
             handler.appendNext(((double)countOperations / (double)targetObj.array.Length).ToString("F2"));
         }
-        static void binaryAvgTime(TestObject targetObject, int numIter, CsvHandler handler)
+        static void binaryAvgTime(TestObject targetObject, long numIter, CsvHandler handler)
         {
             double meanSeconds;
             double sumTime = 0;
             long iterationElapTime;
 
-            for(int n = 0; n < (numIter); ++n)
+            for(long n = 0; n < (numIter); ++n)
             {
         
                 long startTime = Stopwatch.GetTimestamp();
@@ -255,30 +257,30 @@ namespace InitMain
     }
     class TestObject
     {
-        public int[] array;
+        public long[] array;
         //
         public TestObject(): this(2684) // Task required 2^28 = 268435456
         {}
         public TestObject(ulong vectorSize)
         {
-            this.array = new int[vectorSize];
-            for(int i = 0; i < this.array.Length; ++i)
+            this.array = new long[vectorSize];
+            for(long i = 0; i < this.array.Length; ++i)
             {
                 this.array[i] = i;
             }
         }
-        public TestObject(int min, int max, ulong vectorSize)
+        // public TestObject(long min, long max, ulong vectorSize)
+        // {
+        //     Random rnd = new Random();
+        //     this.array = new long[vectorSize];
+        //     for(long i = 0; i < this.array.Length; ++i)
+        //     {
+        //         this.array[i] = rnd.Next(min, max);
+        //     }
+        // }
+        public void getArrayPrlong()
         {
-            Random rnd = new Random();
-            this.array = new int[vectorSize];
-            for(int i = 0; i < this.array.Length; ++i)
-            {
-                this.array[i] = rnd.Next(min, max);
-            }
-        }
-        public void getArrayPrint()
-        {
-            for(int i = 0; i < this.array.Length; ++i)
+            for(long i = 0; i < this.array.Length; ++i)
             {
                 Console.Write(this.array[i] + ", ");
             }   
