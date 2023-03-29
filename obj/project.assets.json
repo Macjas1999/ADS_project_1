@@ -54,11 +54,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/maciej/Desktop/C#/AlgorSemLet/AlgorSemLet.csproj",
+      "projectUniqueName": "/home/maciej/Desktop/C#/ADS_project_1/AlgorSemLet.csproj",
       "projectName": "AlgorSemLet",
-      "projectPath": "/home/maciej/Desktop/C#/AlgorSemLet/AlgorSemLet.csproj",
+      "projectPath": "/home/maciej/Desktop/C#/ADS_project_1/AlgorSemLet.csproj",
       "packagesPath": "/home/maciej/.nuget/packages/",
-      "outputPath": "/home/maciej/Desktop/C#/AlgorSemLet/obj/",
+      "outputPath": "/home/maciej/Desktop/C#/ADS_project_1/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/maciej/.nuget/NuGet/NuGet.Config"
