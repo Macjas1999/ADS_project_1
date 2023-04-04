@@ -12,42 +12,46 @@ namespace InitMain
     class Program
     {
         static long countOperations;
-        static long numIter = 50;
-        // static long ;
+        static int numIter = 256;
+        static int setSize = 131072;// 131072 2^17 //268435456 int 67108864
+        // static int ;
         static void Main(string[] args)
         {
             
-            TestObject testArrayOne = new TestObject(268435456);// Task required 2^28 = 268435456
+            // TestObject testArrayOne = new TestObject(268435456);// Task required 2^28 = 268435456
 
             CsvHandler handler = new CsvHandler("output.csv");
             handler.appendNext("LMaxI,LMaxT,LAvgI,LAvgT,BMaxI,BMaxT,BAvgI");
             handler.appendLastInRow("BAvgT");
-            
+
             Console.WriteLine("  LMaxI |    LMaxT  |  LAvgI |   LAvgT   | BMaxI|   BMaxT   | BAvgI|   BAvgT   |");
 
-            for (long arraySize = testArrayOne.array.Length; arraySize <= arraySize*10; arraySize += arraySize) 
+            for (int arraySize = setSize; arraySize <= setSize*10; arraySize += setSize) 
             {
-                linearMaxInstr(testArrayOne, handler);
-                linearMaxTime(testArrayOne, numIter, handler);
-                linearAvgInstr(testArrayOne, handler);
-                linearAvgTime(testArrayOne, numIter, handler);
+                using(TestObject testArray = new TestObject((uint)arraySize))
+                {
 
-                binaryMaxInstr(testArrayOne, handler);
-                binaryMaxTime(testArrayOne, numIter, handler);
-                binaryAvgInstr(testArrayOne, handler);
-                binaryAvgTime(testArrayOne, numIter, handler);
+                    linearMaxInstr(testArray, handler); 
+                    linearMaxTime(testArray, numIter, handler);
+                    linearAvgInstr(testArray, handler);
+                    linearAvgTime(testArray, numIter, handler);
+    
+                    binaryMaxInstr(testArray, handler);
+                    binaryMaxTime(testArray, numIter, handler);
+                    binaryAvgInstr(testArray, handler);
+                    binaryAvgTime(testArray, numIter, handler);
 
-                Console.WriteLine();
+                    Console.WriteLine();
+                }      
             }
-
         }
         
 
         ////Search functions
         //Linear
-        static bool searchLinearGeneric(long[] vector, long searchTarget)
+        static bool searchLinearGeneric(int[] vector, int searchTarget)
         {
-            for (long i = 0; i < vector.Length; i++)
+            for (int i = 0; i < vector.Length; i++)
             {
                 if (vector[i] == searchTarget)
                     return true;
@@ -55,9 +59,9 @@ namespace InitMain
             return false; 
         }
         //Linear with instrumentation
-        static bool searchLinearInst(long[] vector, long searchTarget)
+        static bool searchLinearInst(int[] vector, int searchTarget)
         {
-            for (long i = 0; i < vector.Length; i++)
+            for (int i = 0; i < vector.Length; i++)
             {
                 countOperations++;
                 if (vector[i] == searchTarget)
@@ -68,11 +72,11 @@ namespace InitMain
             return false; 
         }
         // Binary
-        static bool searchBinaryGeneric(long[] vector, long searchTarget)
+        static bool searchBinaryGeneric(int[] vector, int searchTarget)
         {
-            long left = 0;
-            long right = vector.Length - 1;
-            long middle;
+            int left = 0;
+            int right = vector.Length - 1;
+            int middle;
 
             while (left <= right)
             {
@@ -93,11 +97,11 @@ namespace InitMain
             return false;
         }
         // Binary with instrumentation
-        static bool searchBinaryInst(long[] vector, long searchTarget)
+        static bool searchBinaryInst(int[] vector, int searchTarget)
         {
-            long left = 0;
-            long right = vector.Length - 1;
-            long middle;
+            int left = 0;
+            int right = vector.Length - 1;
+            int middle;
 
             while (left <= right)
             {
@@ -124,20 +128,20 @@ namespace InitMain
         ////Linear
         static void linearMaxInstr(TestObject targetObj, CsvHandler handler)
         {
-         countOperations = 0;
-         bool present = searchLinearInst(targetObj.array, targetObj.array.Length - 1);
-         Console.Write(/*"\t" +*/ countOperations.ToString("F2") +" |");
-         handler.appendNext(countOperations.ToString("F2"));
+            countOperations = 0;
+            bool present = searchLinearInst(targetObj.array, targetObj.array.Length - 1);
+            Console.Write(/*"\t" +*/ countOperations.ToString("F2") +" |");
+            handler.appendNext(countOperations.ToString("F2"));
         }
-        static void linearMaxTime(TestObject targetObj, long numIter, CsvHandler handler)
+        static void linearMaxTime(TestObject targetObj, int numIter, CsvHandler handler)
         {
             double elapSeconds;
-            //long elapTime = 0;
-            long mlongime = long.MaxValue; //targetObj.array[0];
+            //int elapTime = 0;
+            long mintime = long.MaxValue; //targetObj.array[0];
             long maxTime = long.MinValue; //targetObj.array[targetObj.array.Length - 1];
             long iterationElapTime;
 
-            for (long n = 0; n < (numIter); ++n)
+            for (int n = 0; n < (numIter); ++n)
             {
                 long startTime = Stopwatch.GetTimestamp();
                 // Insert function 
@@ -145,7 +149,7 @@ namespace InitMain
                 long endTime = Stopwatch.GetTimestamp();
                 iterationElapTime = endTime - startTime;
                 //elapTime += iterationElapTime;
-                if (iterationElapTime < mlongime) mlongime = iterationElapTime;
+                if (iterationElapTime < mintime) mintime = iterationElapTime;
                 if (iterationElapTime > maxTime) maxTime = iterationElapTime; 
             }   
             //Insert export to csv
@@ -160,17 +164,17 @@ namespace InitMain
             countOperations = 0;
             bool present = searchBinaryInst(targetObj.array, targetObj.array.Length - 1);
             Console.Write(/*"\t" +*/ countOperations.ToString("F2") +" |");
-            handler.appendNext(countOperations.ToString("F2"));
+            handler.appendNext(countOperations.ToString("F2"));        
         }
-        static void binaryMaxTime(TestObject targetObj, long numIter, CsvHandler handler)
+        static void binaryMaxTime(TestObject targetObj, int numIter, CsvHandler handler)
         {
             double elapSeconds;
-            //long elapTime = 0;
-            long mlongime = long.MaxValue; //targetObj.array[0];
+            //int elapTime = 0;
+            long mintime = long.MaxValue; //targetObj.array[0];
             long maxTime = long.MinValue; //targetObj.array[targetObj.array.Length - 1];
             long iterationElapTime;
 
-            for (long n = 0; n < (numIter); ++n)
+            for (int n = 0; n < (numIter); ++n)
             {
                 long startTime = Stopwatch.GetTimestamp();
                 // Insert function 
@@ -178,14 +182,14 @@ namespace InitMain
                 long endTime = Stopwatch.GetTimestamp();
                 iterationElapTime = endTime - startTime;
                 //elapTime += iterationElapTime;
-                if (iterationElapTime < mlongime) mlongime = iterationElapTime;
+                if (iterationElapTime < mintime) mintime = iterationElapTime;
                 if (iterationElapTime > maxTime) maxTime = iterationElapTime; 
             }   
             //Insert export to csv
 
             elapSeconds = maxTime * (1.0 / Stopwatch.Frequency);
             Console.Write(/*"\t" +*/ elapSeconds.ToString("F8") +" |");
-            handler.appendNext(elapSeconds.ToString("F8"));
+            handler.appendNext(elapSeconds.ToString("F8"));        
         }
 
         ///Mean timespan
@@ -194,7 +198,7 @@ namespace InitMain
         {
             countOperations = 0;
             bool present;
-            for (long i = 0; i < targetObj.array.Length; i++)
+            for (int i = 0; i < targetObj.array.Length; i++)
             {
                 present = searchLinearInst(targetObj.array, i);
             }
@@ -202,13 +206,13 @@ namespace InitMain
             handler.appendNext(((double)countOperations / (double)targetObj.array.Length).ToString("F2"));
         }
 
-        static void linearAvgTime(TestObject targetObject, long numIter, CsvHandler handler)
+        static void linearAvgTime(TestObject targetObject, int numIter, CsvHandler handler)
         {
             double meanSeconds;
             double sumTime = 0;
             long iterationElapTime;
 
-            for(long n = 0; n < (numIter); ++n)
+            for(int n = 0; n < (numIter); ++n)
             {
         
                 long startTime = Stopwatch.GetTimestamp();
@@ -220,27 +224,27 @@ namespace InitMain
 
             meanSeconds = (sumTime / numIter) * (1.0 / Stopwatch.Frequency); //(numIter * Stopwatch.Frequency)
             Console.Write(/*"\t" +*/ meanSeconds.ToString("F8") +" |");   
-            handler.appendNext(meanSeconds.ToString("F8"));         
+            handler.appendNext(meanSeconds.ToString("F8"));                 
         }
         ////Binary
         static void binaryAvgInstr(TestObject targetObj, CsvHandler handler)
         {
             countOperations = 0;
             bool present;
-            for (long i = 0; i < targetObj.array.Length +1; i++)
+            for (int i = 0; i < targetObj.array.Length +1; i++)
             {
                 present = searchBinaryInst(targetObj.array, i);
             }
             Console.Write(/*"\t" +*/ ((double)countOperations / (double)targetObj.array.Length).ToString("F2") +" |");
-            handler.appendNext(((double)countOperations / (double)targetObj.array.Length).ToString("F2"));
+            handler.appendNext(((double)countOperations / (double)targetObj.array.Length).ToString("F2"));        
         }
-        static void binaryAvgTime(TestObject targetObject, long numIter, CsvHandler handler)
+        static void binaryAvgTime(TestObject targetObject, int numIter, CsvHandler handler)
         {
             double meanSeconds;
             double sumTime = 0;
             long iterationElapTime;
 
-            for(long n = 0; n < (numIter); ++n)
+            for(int n = 0; n < (numIter); ++n)
             {
         
                 long startTime = Stopwatch.GetTimestamp();
@@ -252,79 +256,91 @@ namespace InitMain
 
             meanSeconds = (sumTime / numIter) * (1.0 / Stopwatch.Frequency); //(numIter * Stopwatch.Frequency)
             Console.Write(/*"\t" +*/ meanSeconds.ToString("F8") +" |");    
-            handler.appendLastInRow(meanSeconds.ToString("F8"));        
+            handler.appendLastInRow(meanSeconds.ToString("F8"));                
         }
     }
-    class TestObject
+    class TestObject : IDisposable
     {
-        public long[] array;
+        public int[] array;
         //
         public TestObject(): this(2684) // Task required 2^28 = 268435456
         {}
-        public TestObject(ulong vectorSize)
+        public TestObject(uint vectorSize)
         {
-            this.array = new long[vectorSize];
-            for(long i = 0; i < this.array.Length; ++i)
+            this.array = new int[vectorSize];
+            for(int i = 0; i < this.array.Length; ++i)
             {
                 this.array[i] = i;
             }
         }
-        // public TestObject(long min, long max, ulong vectorSize)
+        // public TestObject(int min, int max, uint vectorSize)
         // {
         //     Random rnd = new Random();
-        //     this.array = new long[vectorSize];
-        //     for(long i = 0; i < this.array.Length; ++i)
+        //     this.array = new int[vectorSize];
+        //     for(int i = 0; i < this.array.Length; ++i)
         //     {
         //         this.array[i] = rnd.Next(min, max);
         //     }
         // }
-        public void getArrayPrlong()
+
+        protected virtual void Dispose(bool disposing){}
+        public void Dispose()
         {
-            for(long i = 0; i < this.array.Length; ++i)
+          Dispose(true);
+          GC.SuppressFinalize(this);
+        }
+        ~TestObject( )
+        {
+          Dispose(false);
+        }
+
+        public void getArrayPrint()
+        {
+            for(int i = 0; i < this.array.Length; ++i)
             {
                 Console.Write(this.array[i] + ", ");
             }   
         }
     }
+}
 
-    class CsvHandler
+class CsvHandler
+{
+    public string fileName;
+    public bool test;
+    public CsvHandler(string fileName)
     {
-        public string fileName;
-        public bool test;
-        public CsvHandler(string fileName)
+        this.fileName = fileName;
+        if(File.Exists(fileName))
         {
-            this.fileName = fileName;
-            if(File.Exists(fileName))
+            File.Delete(fileName);
+        }
+        else if(!File.Exists(fileName))
+        {
+            using(FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate , FileAccess.ReadWrite))
             {
-                File.Delete(fileName);
-            }
-            else if(!File.Exists(fileName))
-            {
-                using(FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate , FileAccess.ReadWrite))
-                {
-                    if(fs.CanWrite) this.test = true;
-                }
+                if(fs.CanWrite) this.test = true;
             }
         }
-        public void appendNext(string data)
+    }
+    public void appendNext(string data)
+    {
+        using(StreamWriter writer = new StreamWriter(this.fileName, append: true))
         {
-            using(StreamWriter writer = new StreamWriter(this.fileName, append: true))
-            {
-                writer.Flush();
-                writer.Write(data);
-                writer.Write(",");
-                writer.Close();
-            }
+            writer.Flush();
+            writer.Write(data);
+            writer.Write(",");
+            writer.Close();
         }
-        public void appendLastInRow(string data)
+    }
+    public void appendLastInRow(string data)
+    {
+        using(StreamWriter writer = new StreamWriter(this.fileName, append: true))
         {
-            using(StreamWriter writer = new StreamWriter(this.fileName, append: true))
-            {
-                writer.Flush();
-                writer.Write(data);
-                writer.Write(Environment.NewLine);
-                writer.Close();
-            }
+            writer.Flush();
+            writer.Write(data);
+            writer.Write(Environment.NewLine);
+            writer.Close();
         }
     }
 }
