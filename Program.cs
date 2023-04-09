@@ -10,6 +10,9 @@ class Program
     {
         testNum = -1;
 
+        TargetContainer container = new TargetContainer();
+        Console.WriteLine(container.list[0]);
+
         try
         {
             if (IsPrimeV1(testNum))
@@ -132,10 +135,48 @@ class Program
     //         return false;
     //     }
     // }
-
-
 }
 
+class TargetContainer
+{
+    //public BigInteger[]? list; //to test
+    public List<BigInteger> list;
+
+    public TargetContainer()
+    {
+        this.list = new List<BigInteger>();
+        string? input;
+        while (true)
+        {
+            input = Console.ReadLine();
+            if (string.IsNullOrEmpty(input) != true)
+            {  
+                if (input == "-end")
+                {
+                    break;
+                }
+                else
+                {
+                    try
+                    {
+                        this.list.Add(BigInteger.Parse(input));
+                        // this.list![index] = new BigInteger();
+                        // this.list[index] = BigInteger.Parse(input);
+                        // index++;   
+                    }
+                    catch (FormatException)
+                    {
+                        Console.WriteLine("Unable to parse {0}", input);
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("Input given cannot be null");
+            }   
+        }
+    }
+}
 
 
 
