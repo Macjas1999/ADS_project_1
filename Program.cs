@@ -4,45 +4,50 @@ using System.Diagnostics;
 
 class Program
 {
-    static BigInteger testNum;
+    static BigInteger instCounter;
+    static double stopwatchResult;
+    static bool enableInstrumentation;
+    static bool enableTimer;
+
 
     static void Main(string[] args)
     {
-        testNum = -1;
+        TargetContainer inputContainer = new TargetContainer();
 
-        TargetContainer container = new TargetContainer();
-        Console.WriteLine(container.list[0]);
-
-        try
+        foreach (BigInteger elem in inputContainer.list)
         {
-            if (IsPrimeV1(testNum))
+            Console.WriteLine("Element {0}", elem);
+            try
             {
-                Console.WriteLine("V1 true");
+                if (IsPrimeV1(elem))
+                {
+                    Console.WriteLine("V1 true");
+                }
+                else
+                {
+                    Console.WriteLine("V1 false");
+                }
+                if (IsPrimeV2(elem))
+                {
+                    Console.WriteLine("V2 true");
+                }
+                else
+                {
+                    Console.WriteLine("V2 false");
+                }
+                if (IsPrimeV3(elem))
+                {
+                    Console.WriteLine("V3 true");
+                }
+                else
+                {
+                    Console.WriteLine("V3 false");
+                }   
             }
-            else
-            {
-                Console.WriteLine("V1 false");
+            catch (System.Exception)
+            {          
+                Console.WriteLine("Evaluation failed");
             }
-            if (IsPrimeV2(testNum))
-            {
-                Console.WriteLine("V2 true");
-            }
-            else
-            {
-                Console.WriteLine("V2 false");
-            }
-            if (IsPrimeV3(testNum))
-            {
-                Console.WriteLine("V3 true");
-            }
-            else
-            {
-                Console.WriteLine("V3 false");
-            }   
-        }
-        catch (System.Exception)
-        {          
-            throw;
         }
     }
 
@@ -63,7 +68,7 @@ class Program
         else
         {
             for (BigInteger u = 3; u < n  / 2; u += 2)
-            {
+            {   
                 if (n  % u == 0)
                 {
                     return false;
@@ -119,33 +124,56 @@ class Program
         return true;
     }
 
-    //Misc
-    // static bool handleInput()
-    // {
-        
-    //     string? input = Console.ReadLine();
-    //     if (input != null)
-    //     {
-    //         testNum = BigInteger.Parse(input);
-    //         return true;
-    //     }
-    //     else
-    //     {
-    //         Console.WriteLine("Invalid input");
-    //         return false;
-    //     }
-    // }
+    //Testers
+
+    static void instrumentation(char i, BigInteger counter, bool toggle)
+    {
+        if (toggle)
+        {
+            switch (i)
+            {
+                case 'n':
+                    counter++;
+                    break;
+
+                case 'r':
+                    counter = 0;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
+    static void stopwatch(char i, double timer, bool toggle)
+    {
+        if (toggle)
+        {
+            switch (i)
+            {
+                case 'e': // enable
+                    break;
+
+                case 'd': //disable
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
 }
 
 class TargetContainer
 {
-    //public BigInteger[]? list; //to test
     public List<BigInteger> list;
 
     public TargetContainer()
     {
         this.list = new List<BigInteger>();
         string? input;
+        Console.WriteLine("Input elements to the list of numbers o be evaluated one by one.");
+        Console.WriteLine("If all elements have been added type \"-end\".");
         while (true)
         {
             input = Console.ReadLine();
@@ -160,9 +188,6 @@ class TargetContainer
                     try
                     {
                         this.list.Add(BigInteger.Parse(input));
-                        // this.list![index] = new BigInteger();
-                        // this.list[index] = BigInteger.Parse(input);
-                        // index++;   
                     }
                     catch (FormatException)
                     {
@@ -178,6 +203,11 @@ class TargetContainer
     }
 }
 
+
+class Probe
+{
+
+}
 
 
 //
