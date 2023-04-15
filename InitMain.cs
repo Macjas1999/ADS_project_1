@@ -178,7 +178,7 @@ namespace InitMain
             {
                 long startTime = Stopwatch.GetTimestamp();
                 // Insert function 
-                bool isPresent = searchBinaryGeneric(targetObj.array, targetObj.array.Length - 1);
+                bool isPresent = searchBinaryGeneric(targetObj.array, targetObj.array.Length);
                 long endTime = Stopwatch.GetTimestamp();
                 iterationElapTime = endTime - startTime;
                 //elapTime += iterationElapTime;
@@ -248,7 +248,7 @@ namespace InitMain
             {
         
                 long startTime = Stopwatch.GetTimestamp();
-                bool isPresent = searchBinaryGeneric(targetObject.array, numIter);
+                bool isPresent = searchBinaryGeneric(targetObject.array, n);
                 long endTime = Stopwatch.GetTimestamp();
                 iterationElapTime = endTime - startTime;
                 sumTime += iterationElapTime;
