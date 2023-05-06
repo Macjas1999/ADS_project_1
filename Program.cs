@@ -69,74 +69,98 @@ class Program
 
     static bool IsPrimeV1(BigInteger n)
     {
+        stopwatch('e', enableTimer);
         if (n  < 2)
         {
+            stopwatch('d', enableTimer);
             return false;
         }
         else if (n  < 4)
         {
+            stopwatch('d', enableTimer);
             return true;
         }
         else if (n  % 2 == 0)
         {
+            instrumentation('n', instCounter, enableInstrumentation);
+            stopwatch('d', enableTimer);
             return false;
         }
         else
         {
             for (BigInteger u = 3; u < n  / 2; u += 2)
-            {   
+            {
+                instrumentation('n', instCounter, enableInstrumentation);   
                 if (n  % u == 0)
                 {
+                    stopwatch('d', enableTimer);
                     return false;
                 }
             }
         }
+        stopwatch('d', enableTimer);
         return true;
     }
+
     static bool IsPrimeV2(BigInteger n)
     {
+        stopwatch('e', enableTimer);
         if (n < 2)
         {
+            stopwatch('d', enableTimer);
             return false;
         }
         else if (n == 2)
         {
+            stopwatch('d', enableTimer);
             return true;
         }
         int i = 2;
         do
         {
+            instrumentation('n', instCounter, enableInstrumentation);
             if (n % i == 0)
             {
+                stopwatch('d', enableTimer);
                 return false;
             }
             i++;
         } while (i <= Math.Sqrt((double)n));
+        stopwatch('d', enableTimer);
         return true;
     }
+
     static bool IsPrimeV3(BigInteger n)
     {
+        stopwatch('e', enableTimer);
         if (n < 2)
         {
+            stopwatch('d', enableTimer);
             return false;
         }
         if (n == 2 || n == 3)
         {
+            stopwatch('d', enableTimer);
             return true;
         }
         if (n % 2 == 0 || n % 3 == 0)
         {
+            instrumentation('n', instCounter, enableInstrumentation);
+            stopwatch('d', enableTimer);
             return false;
         }
         int i = 5;
         while (i * i <= n)
         {
+            instrumentation('n', instCounter, enableInstrumentation);
             if (n % i == 0 || n % (i + 2) == 0)
             {
+                stopwatch('d', enableTimer);
                 return false;
             }
             i += 6;
         }
+        stopwatch('d', enableTimer);
         return true;
     }
 
@@ -174,9 +198,6 @@ class Program
                 case 'd': //disable
                     stopwatchStartTimestamp = Stopwatch.GetTimestamp();
                     stopwatchResult = stopwatchEndTimestamp - stopwatchStartTimestamp;
-                    //Flush
-                    stopwatchEndTimestamp = 0;
-                    stopwatchStartTimestamp = 0;
                     break;
 
                 case 'r': //reset
