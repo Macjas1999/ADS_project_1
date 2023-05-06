@@ -5,7 +5,9 @@ using System.Diagnostics;
 class Program
 {
     static BigInteger instCounter;
-    static double stopwatchResult;
+    static long stopwatchStartTimestamp;
+    static long stopwatchEndTimestamp;
+    static long stopwatchResult;
     static bool enableInstrumentation;
     static bool enableTimer;
 
@@ -13,6 +15,8 @@ class Program
     static void Main(string[] args)
     {
         TargetContainer inputContainer = new TargetContainer();
+        enableInstrumentation = true;
+        enableTimer = true;
 
         foreach (BigInteger elem in inputContainer.list)
         {
@@ -27,6 +31,10 @@ class Program
                 {
                     Console.WriteLine("V1 false");
                 }
+                //save counter
+                instrumentation('r', instCounter, enableInstrumentation);
+                //save timestamp
+                stopwatch('r', enableTimer);
                 if (IsPrimeV2(elem))
                 {
                     Console.WriteLine("V2 true");
@@ -35,6 +43,10 @@ class Program
                 {
                     Console.WriteLine("V2 false");
                 }
+                //save counter
+                instrumentation('r', instCounter, enableInstrumentation);
+                //save timestamp
+                stopwatch('r', enableTimer);
                 if (IsPrimeV3(elem))
                 {
                     Console.WriteLine("V3 true");
@@ -42,7 +54,11 @@ class Program
                 else
                 {
                     Console.WriteLine("V3 false");
-                }   
+                }
+                //save counter
+                instrumentation('r', instCounter, enableInstrumentation);   
+                //save timestamp
+                stopwatch('r', enableTimer);
             }
             catch (System.Exception)
             {          
@@ -145,16 +161,28 @@ class Program
             }
         }
     }
-    static void stopwatch(char i, double timer, bool toggle)
+    static void stopwatch(char i, bool toggle) // , long timer
     {
         if (toggle)
         {
             switch (i)
             {
                 case 'e': // enable
+                    stopwatchStartTimestamp = Stopwatch.GetTimestamp();
                     break;
 
                 case 'd': //disable
+                    stopwatchStartTimestamp = Stopwatch.GetTimestamp();
+                    stopwatchResult = stopwatchEndTimestamp - stopwatchStartTimestamp;
+                    //Flush
+                    stopwatchEndTimestamp = 0;
+                    stopwatchStartTimestamp = 0;
+                    break;
+
+                case 'r': //reset
+                    stopwatchStartTimestamp = 0;
+                    stopwatchEndTimestamp = 0;
+                    stopwatchResult = 0;
                     break;
 
                 default:
@@ -168,6 +196,11 @@ class TargetContainer
 {
     public List<BigInteger> list;
 
+
+    public TargetContainer(List<BigInteger> input)
+    {
+        this.list = input;
+    }
     public TargetContainer()
     {
         this.list = new List<BigInteger>();
