@@ -29,7 +29,7 @@ class Program
             try
             {
                 //add first column 
-                handler.appendNext(elem.ToString("F2"));
+                handler.appendNext(elem.ToString("F0"));
                 if (IsPrimeV1(elem))
                 {
                     Console.WriteLine("V1 true");
@@ -40,7 +40,7 @@ class Program
                 }
                 //save counter
                 Console.Write("{0} | ", instCounter);
-                handler.appendNext(instCounter.ToString("F2"));
+                handler.appendNext(instCounter.ToString("F0"));
                 instrumentation('r', enableInstrumentation);
                 //save timestamp
                 Console.WriteLine("{0}", stopwatchResult.ToString("F8"));
@@ -56,7 +56,7 @@ class Program
                 }
                 //save counter
                 Console.Write("{0} | ", instCounter);
-                handler.appendNext(instCounter.ToString("F2"));
+                handler.appendNext(instCounter.ToString("F0"));
                 instrumentation('r', enableInstrumentation);
                 //save timestamp
                 Console.WriteLine("{0}", stopwatchResult.ToString("F8"));
@@ -72,7 +72,7 @@ class Program
                 }
                 //save counter
                 Console.Write("{0} | ", instCounter);
-                handler.appendNext(instCounter.ToString("F2"));                
+                handler.appendNext(instCounter.ToString("F0"));                
                 instrumentation('r', enableInstrumentation);   
                 //save timestamp
                 Console.WriteLine("{0}", stopwatchResult.ToString("F8"));
