@@ -7,7 +7,7 @@ class Program
     static BigInteger instCounter;
     static long stopwatchStartTimestamp;
     static long stopwatchEndTimestamp;
-    static long stopwatchResult;
+    static double stopwatchResult;
     static bool enableInstrumentation;
     static bool enableTimer;
 
@@ -17,12 +17,19 @@ class Program
         TargetContainer inputContainer = new TargetContainer();
         enableInstrumentation = true;
         enableTimer = true;
+        instCounter = 0;
+
+        CsvHandler handler = new CsvHandler("out.csv");
+        handler.appendLastInRow("int, v1Ins, v1Tim, v2Ins, v2Tim, v3Ins, v3Tim");
 
         foreach (BigInteger elem in inputContainer.list)
         {
+            Console.WriteLine("===================");
             Console.WriteLine("Element {0}", elem);
             try
             {
+                //add first column 
+                handler.appendNext(elem.ToString("F2"));
                 if (IsPrimeV1(elem))
                 {
                     Console.WriteLine("V1 true");
@@ -32,8 +39,12 @@ class Program
                     Console.WriteLine("V1 false");
                 }
                 //save counter
-                instrumentation('r', instCounter, enableInstrumentation);
+                Console.Write("{0} | ", instCounter);
+                handler.appendNext(instCounter.ToString("F2"));
+                instrumentation('r', enableInstrumentation);
                 //save timestamp
+                Console.WriteLine("{0}", stopwatchResult.ToString("F8"));
+                handler.appendNext(stopwatchResult.ToString("F8"));
                 stopwatch('r', enableTimer);
                 if (IsPrimeV2(elem))
                 {
@@ -44,8 +55,12 @@ class Program
                     Console.WriteLine("V2 false");
                 }
                 //save counter
-                instrumentation('r', instCounter, enableInstrumentation);
+                Console.Write("{0} | ", instCounter);
+                handler.appendNext(instCounter.ToString("F2"));
+                instrumentation('r', enableInstrumentation);
                 //save timestamp
+                Console.WriteLine("{0}", stopwatchResult.ToString("F8"));
+                handler.appendNext(stopwatchResult.ToString("F8"));
                 stopwatch('r', enableTimer);
                 if (IsPrimeV3(elem))
                 {
@@ -56,8 +71,12 @@ class Program
                     Console.WriteLine("V3 false");
                 }
                 //save counter
-                instrumentation('r', instCounter, enableInstrumentation);   
+                Console.Write("{0} | ", instCounter);
+                handler.appendNext(instCounter.ToString("F2"));                
+                instrumentation('r', enableInstrumentation);   
                 //save timestamp
+                Console.WriteLine("{0}", stopwatchResult.ToString("F8"));
+                handler.appendLastInRow(stopwatchResult.ToString("F8"));
                 stopwatch('r', enableTimer);
             }
             catch (System.Exception)
@@ -67,9 +86,10 @@ class Program
         }
     }
 
+
     static bool IsPrimeV1(BigInteger n)
     {
-        stopwatch('e', enableTimer);
+                stopwatch('e', enableTimer);
         if (n  < 2)
         {
             stopwatch('d', enableTimer);
@@ -82,7 +102,7 @@ class Program
         }
         else if (n  % 2 == 0)
         {
-            instrumentation('n', instCounter, enableInstrumentation);
+            instrumentation('n', enableInstrumentation);
             stopwatch('d', enableTimer);
             return false;
         }
@@ -90,7 +110,7 @@ class Program
         {
             for (BigInteger u = 3; u < n  / 2; u += 2)
             {
-                instrumentation('n', instCounter, enableInstrumentation);   
+                instrumentation('n', enableInstrumentation);   
                 if (n  % u == 0)
                 {
                     stopwatch('d', enableTimer);
@@ -118,7 +138,7 @@ class Program
         int i = 2;
         do
         {
-            instrumentation('n', instCounter, enableInstrumentation);
+            instrumentation('n', enableInstrumentation);
             if (n % i == 0)
             {
                 stopwatch('d', enableTimer);
@@ -145,14 +165,14 @@ class Program
         }
         if (n % 2 == 0 || n % 3 == 0)
         {
-            instrumentation('n', instCounter, enableInstrumentation);
+            instrumentation('n', enableInstrumentation);
             stopwatch('d', enableTimer);
             return false;
         }
         int i = 5;
         while (i * i <= n)
         {
-            instrumentation('n', instCounter, enableInstrumentation);
+            instrumentation('n', enableInstrumentation);
             if (n % i == 0 || n % (i + 2) == 0)
             {
                 stopwatch('d', enableTimer);
@@ -166,18 +186,18 @@ class Program
 
     //Testers
 
-    static void instrumentation(char i, BigInteger counter, bool toggle)
+    static void instrumentation(char i, bool toggle)
     {
         if (toggle)
         {
             switch (i)
             {
                 case 'n':
-                    counter++;
+                    instCounter++;
                     break;
 
                 case 'r':
-                    counter = 0;
+                    instCounter = 0;
                     break;
 
                 default:
@@ -196,8 +216,9 @@ class Program
                     break;
 
                 case 'd': //disable
-                    stopwatchStartTimestamp = Stopwatch.GetTimestamp();
+                    stopwatchEndTimestamp = Stopwatch.GetTimestamp();
                     stopwatchResult = stopwatchEndTimestamp - stopwatchStartTimestamp;
+                    stopwatchResult = stopwatchResult * (1.0 / Stopwatch.Frequency);
                     break;
 
                 case 'r': //reset
@@ -256,13 +277,6 @@ class TargetContainer
         }
     }
 }
-
-
-class Probe
-{
-
-}
-
 
 //
 //Misc
