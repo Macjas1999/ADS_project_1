@@ -14,6 +14,9 @@ class Program
 
     static void Main(string[] args)
     {
+        //load list
+        //List<BigInteger> inputChain = new List<BigInteger>();
+        
         TargetContainer inputContainer = new TargetContainer();
         enableInstrumentation = true;
         enableTimer = true;
@@ -46,6 +49,7 @@ class Program
                 Console.WriteLine("{0}", stopwatchResult.ToString("F8"));
                 handler.appendNext(stopwatchResult.ToString("F8"));
                 stopwatch('r', enableTimer);
+
                 if (IsPrimeV2(elem))
                 {
                     Console.WriteLine("V2 true");
@@ -100,7 +104,7 @@ class Program
             stopwatch('d', enableTimer);
             return true;
         }
-        else if (n  % 2 == 0)
+        else if (n % 2 == 0)
         {
             instrumentation('n', enableInstrumentation);
             stopwatch('d', enableTimer);
@@ -111,7 +115,7 @@ class Program
             for (BigInteger u = 3; u < n  / 2; u += 2)
             {
                 instrumentation('n', enableInstrumentation);   
-                if (n  % u == 0)
+                if (n % u == 0)
                 {
                     stopwatch('d', enableTimer);
                     return false;
@@ -121,6 +125,7 @@ class Program
         stopwatch('d', enableTimer);
         return true;
     }
+
 
     static bool IsPrimeV2(BigInteger n)
     {
@@ -135,7 +140,7 @@ class Program
             stopwatch('d', enableTimer);
             return true;
         }
-        int i = 2;
+        BigInteger i = 2;
         do
         {
             instrumentation('n', enableInstrumentation);
@@ -145,10 +150,11 @@ class Program
                 return false;
             }
             i++;
-        } while (i <= Math.Sqrt((double)n));
+        } while (i*i <= n);
         stopwatch('d', enableTimer);
         return true;
     }
+
 
     static bool IsPrimeV3(BigInteger n)
     {
@@ -205,7 +211,7 @@ class Program
             }
         }
     }
-    static void stopwatch(char i, bool toggle) // , long timer
+    static void stopwatch(char i, bool toggle)
     {
         if (toggle)
         {
@@ -247,7 +253,7 @@ class TargetContainer
     {
         this.list = new List<BigInteger>();
         string? input;
-        Console.WriteLine("Input elements to the list of numbers o be evaluated one by one.");
+        Console.WriteLine("Input elements to the list of numbers to be evaluated one by one or paste list of numbers separated by EOL characters.");
         Console.WriteLine("If all elements have been added type \"-end\".");
         while (true)
         {
@@ -255,6 +261,7 @@ class TargetContainer
             if (string.IsNullOrEmpty(input) != true)
             {  
                 if (input == "-end")
+
                 {
                     break;
                 }
@@ -277,7 +284,6 @@ class TargetContainer
         }
     }
 }
-
 //
 //Misc
 //
@@ -294,7 +300,7 @@ class CsvHandler
         }
         else if(!File.Exists(fileName))
         {
-            using(FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate , FileAccess.ReadWrite))
+            using(FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
                 if(fs.CanWrite) this.test = true;
             }
