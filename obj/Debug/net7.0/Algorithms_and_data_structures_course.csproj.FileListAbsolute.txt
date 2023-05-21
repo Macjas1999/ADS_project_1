@@ -1,0 +1,15 @@
+/home/maciej/Desktop/C#/Proj3ADS/Algorithms_and_data_structures_course/bin/Debug/net7.0/Algorithms_and_data_structures_course
+/home/maciej/Desktop/C#/Proj3ADS/Algorithms_and_data_structures_course/bin/Debug/net7.0/Algorithms_and_data_structures_course.deps.json
+/home/maciej/Desktop/C#/Proj3ADS/Algorithms_and_data_structures_course/bin/Debug/net7.0/Algorithms_and_data_structures_course.runtimeconfig.json
+/home/maciej/Desktop/C#/Proj3ADS/Algorithms_and_data_structures_course/bin/Debug/net7.0/Algorithms_and_data_structures_course.dll
+/home/maciej/Desktop/C#/Proj3ADS/Algorithms_and_data_structures_course/bin/Debug/net7.0/Algorithms_and_data_structures_course.pdb
+/home/maciej/Desktop/C#/Proj3ADS/Algorithms_and_data_structures_course/obj/Debug/net7.0/Algorithms_and_data_structures_course.csproj.AssemblyReference.cache
+/home/maciej/Desktop/C#/Proj3ADS/Algorithms_and_data_structures_course/obj/Debug/net7.0/Algorithms_and_data_structures_course.GeneratedMSBuildEditorConfig.editorconfig
+/home/maciej/Desktop/C#/Proj3ADS/Algorithms_and_data_structures_course/obj/Debug/net7.0/Algorithms_and_data_structures_course.AssemblyInfoInputs.cache
+/home/maciej/Desktop/C#/Proj3ADS/Algorithms_and_data_structures_course/obj/Debug/net7.0/Algorithms_and_data_structures_course.AssemblyInfo.cs
+/home/maciej/Desktop/C#/Proj3ADS/Algorithms_and_data_structures_course/obj/Debug/net7.0/Algorithms_and_data_structures_course.csproj.CoreCompileInputs.cache
+/home/maciej/Desktop/C#/Proj3ADS/Algorithms_and_data_structures_course/obj/Debug/net7.0/Algorithms_and_data_structures_course.dll
+/home/maciej/Desktop/C#/Proj3ADS/Algorithms_and_data_structures_course/obj/Debug/net7.0/refint/Algorithms_and_data_structures_course.dll
+/home/maciej/Desktop/C#/Proj3ADS/Algorithms_and_data_structures_course/obj/Debug/net7.0/Algorithms_and_data_structures_course.pdb
+/home/maciej/Desktop/C#/Proj3ADS/Algorithms_and_data_structures_course/obj/Debug/net7.0/Algorithms_and_data_structures_course.genruntimeconfig.cache
+/home/maciej/Desktop/C#/Proj3ADS/Algorithms_and_data_structures_course/obj/Debug/net7.0/ref/Algorithms_and_data_structures_course.dll
