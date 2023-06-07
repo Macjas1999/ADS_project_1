@@ -6,101 +6,300 @@ using System.ComponentModel;
 
 class Program
 {
-    static int length;
+    // static int length;
     static void Main(string[] args)
     {
-        length = 10;
+
+        testsDataOutput();
+        // length = 20000;
+        // double[,] fourTestsResults = fourTests(length);
+
+        // for (int i = 0; i < 5; i++)
+        // {
+        //     for (int j = 0; j < 4; j++)
+        //     {
+        //         if (j == 3)
+        //         {
+        //             Console.WriteLine("{0}", fourTestsResults[j,i].ToString("F8"));
+
+        //         }
+        //         else
+        //         {
+        //             Console.Write("{0} |", fourTestsResults[j,i].ToString("F8"));
+        //         }
+        //     }
+        // }
+        // length = 10;
+        // TargetContainer boxOfLists = new TargetContainer(length, 1);
+        // Timer timer = new Timer();
+
+
+        // for(int i = 0; i < length; i++)
+        // {
+        //     Console.Write("{0}, ", boxOfLists.listVShape[i].ToString("F0"));
+        // }
+
+        // Console.WriteLine("");
+        // Console.WriteLine("============");
+
+        // int[] resInserSort = new int[boxOfLists.listVShape.Length];
+        // Array.Copy(boxOfLists.listVShape, resInserSort, boxOfLists.listVShape.Length);
+        // timer.start();
+        // InsertionSort(resInserSort);
+        // timer.stop();
+        // for(int i = 0; i < length; i++)
+        // {
+        //     Console.Write("{0}, ", resInserSort[i].ToString("F0"));
+        // }
+        // Console.Write(" {0}", timer.result.ToString("F8"));
+        // Console.WriteLine("");
+        // Console.WriteLine("============");
+
+        // int[] resSelecSort = new int[boxOfLists.listVShape.Length];
+        // Array.Copy(boxOfLists.listVShape, resSelecSort, boxOfLists.listVShape.Length);
+        // SelectionSort(resSelecSort);
+        // for(int i = 0; i < length; i++)
+        // {
+        //     Console.Write("{0}, ", resSelecSort[i].ToString("F0"));
+        // }
+
+        // Console.WriteLine("");
+        // Console.WriteLine("============");
+
+        // int[] resHeapSort = new int[boxOfLists.listVShape.Length];
+        // Array.Copy(boxOfLists.listVShape, resHeapSort, boxOfLists.listVShape.Length);
+        // HeapSort(resHeapSort);
+        // for(int i = 0; i < length; i++)
+        // {
+        //     Console.Write("{0}, ", resHeapSort[i].ToString("F0"));
+        // }
+
+        // Console.WriteLine("");
+        // Console.WriteLine("============");
+
+        // int[] resCoctailSort = new int[boxOfLists.listVShape.Length];
+        // Array.Copy(boxOfLists.listVShape, resCoctailSort, boxOfLists.listVShape.Length);
+        // CocktailSort(resCoctailSort);
+        // for(int i = 0; i < length; i++)
+        // {
+        //     Console.Write("{0}, ", resCoctailSort[i].ToString("F0"));
+        // }
+
+
+        // // Console.WriteLine("");
+        // // Console.WriteLine("============");
+        // // int[] resQuickSortRec = new int[boxOfLists.listVShape.Length];
+        // // Array.Copy(boxOfLists.listVShape, resQuickSortRec, boxOfLists.listVShape.Length);
+
+        // // resQuickSortRec = QuickSRec(resQuickSortRec, resQuickSortRec[0], resQuickSortRec[length-1]);
+        // // for(int i = 0; i < length; i++)
+        // // {
+        // //     Console.Write("{0}, ", resQuickSortRec[i].ToString("F0"));
+        // // }
+
+        // // Console.WriteLine("");
+        // // Console.WriteLine("============");
+        // // int[] resQuickSortIte = QuickSIte(boxOfLists.listVShape);
+        // // for(int i = 0; i < length; i++)
+        // // {
+        // //     Console.Write("{0}, ", resQuickSortIte[i].ToString("F0"));
+        // // }
+
+        // Console.WriteLine("");
+        // Console.WriteLine("============");
+        // //Check
+        // for(int i = 0; i < length; i++)
+        // {
+        //     Console.Write("{0}, ", boxOfLists.listVShape[i].ToString("F0"));
+        // }
+        // Console.WriteLine("");
+    }
+//Run functions
+
+    static void testsDataOutput()
+    {
+        CsvHandler handler = new CsvHandler("output.csv");
+
+        string[] algorythms = {"Insertion S", "Selection S", "Heap S", "Cocktail S"};
+        Console.WriteLine("Length ; Alg ; Random ; Ascending ; Descending ; Static ; VShape");
+        handler.appendLastInRow("Length ; Alg ; Random ; Ascending ; Descending ; Static ; VShape");
+        
+        for (int length = 50000; length <= 150000; length += 5000)
+        {
+            double[,] fourTestsResults = fourTests(length);
+            for (int i = 0; i < 4; i++)
+            {
+                Console.Write("{0}|", length);
+                handler.appendNext(length.ToString("F0"));
+                Console.Write("{0}|", algorythms[i]);
+                handler.appendNext(algorythms[i]);
+                for (int j = 0; j < 5; j++)
+                {
+                    if (j == 4)
+                    {
+                        Console.WriteLine("{0}", fourTestsResults[i,j].ToString("F8"));
+                        handler.appendLastInRow(fourTestsResults[i,j].ToString("F8"));
+
+                    }
+                    else
+                    {
+                        Console.Write("{0} |", fourTestsResults[i,j].ToString("F8"));
+                        handler.appendNext(fourTestsResults[i,j].ToString("F8"));
+                    }
+                }
+            }
+        }
+    }
+    static double[,] fourTests(int length)
+    {
         TargetContainer boxOfLists = new TargetContainer(length, 1);
         Timer timer = new Timer();
+        double[,] results = new double [4, 5];
 
+        int[] bufferRandom = new int[boxOfLists.listRand.Length];
+        int[] bufferAscending = new int[boxOfLists.listAsc.Length];
+        int[] bufferDescending = new int[boxOfLists.listDesc.Length];
+        int[] bufferStatic = new int[boxOfLists.listStatic.Length];
+        int[] bufferVShape = new int[boxOfLists.listVShape.Length];
 
-        for(int i = 0; i < length; i++)
-        {
-            Console.Write("{0}, ", boxOfLists.listVShape[i].ToString("F0"));
-        }
+        Array.Copy(boxOfLists.listRand, bufferRandom, boxOfLists.listVShape.Length);
+        Array.Copy(boxOfLists.listAsc, bufferAscending, boxOfLists.listVShape.Length);
+        Array.Copy(boxOfLists.listDesc, bufferDescending, boxOfLists.listVShape.Length);
+        Array.Copy(boxOfLists.listStatic, bufferStatic, boxOfLists.listVShape.Length);
+        Array.Copy(boxOfLists.listVShape, bufferVShape, boxOfLists.listVShape.Length);
 
-        Console.WriteLine("");
-        Console.WriteLine("============");
-
-        int[] resInserSort = new int[boxOfLists.listVShape.Length];
-        Array.Copy(boxOfLists.listVShape, resInserSort, boxOfLists.listVShape.Length);
         timer.start();
-        InsertionSort(resInserSort);
+        InsertionSort(bufferRandom);
         timer.stop();
-        for(int i = 0; i < length; i++)
-        {
-            Console.Write("{0}, ", resInserSort[i].ToString("F0"));
-        }
-        Console.Write(" {0}", timer.result.ToString("F8"));
-        Console.WriteLine("");
-        Console.WriteLine("============");
+        results[0, 0] = timer.result;
+        timer.set();
+        timer.start();
+        InsertionSort(bufferAscending);
+        timer.stop();
+        results[0, 1] = timer.result;
+        timer.set();
+        timer.start();
+        InsertionSort(bufferDescending);
+        timer.stop();
+        results[0, 2] = timer.result;
+        timer.set();
+        timer.start();
+        InsertionSort(bufferStatic);
+        timer.stop();
+        results[0, 3] = timer.result;
+        timer.set();
+        timer.start();
+        InsertionSort(bufferVShape);
+        timer.stop();
+        results[0, 4] = timer.result;
+        timer.set();                
 
-        int[] resSelecSort = new int[boxOfLists.listVShape.Length];
-        Array.Copy(boxOfLists.listVShape, resSelecSort, boxOfLists.listVShape.Length);
-        SelectionSort(resSelecSort);
-        for(int i = 0; i < length; i++)
-        {
-            Console.Write("{0}, ", resSelecSort[i].ToString("F0"));
-        }
+        Array.Copy(boxOfLists.listRand, bufferRandom, boxOfLists.listVShape.Length);
+        Array.Copy(boxOfLists.listAsc, bufferAscending, boxOfLists.listVShape.Length);
+        Array.Copy(boxOfLists.listDesc, bufferDescending, boxOfLists.listVShape.Length);
+        Array.Copy(boxOfLists.listStatic, bufferStatic, boxOfLists.listVShape.Length);
+        Array.Copy(boxOfLists.listVShape, bufferVShape, boxOfLists.listVShape.Length);
 
-        Console.WriteLine("");
-        Console.WriteLine("============");
+        timer.start();
+        SelectionSort(bufferRandom);
+        timer.stop();
+        results[1, 0] = timer.result;
+        timer.set();
+        timer.start();
+        SelectionSort(bufferAscending);
+        timer.stop();
+        results[1, 1] = timer.result;
+        timer.set();
+        timer.start();
+        SelectionSort(bufferDescending);
+        timer.stop();
+        results[1, 2] = timer.result;
+        timer.set();
+        timer.start();
+        SelectionSort(bufferStatic);
+        timer.stop();
+        results[1, 3] = timer.result;
+        timer.set();
+        timer.start();
+        SelectionSort(bufferVShape);
+        timer.stop();
+        results[1, 4] = timer.result;
+        timer.set(); 
 
-        int[] resHeapSort = new int[boxOfLists.listVShape.Length];
-        Array.Copy(boxOfLists.listVShape, resHeapSort, boxOfLists.listVShape.Length);
-        HeapSort(resHeapSort);
-        for(int i = 0; i < length; i++)
-        {
-            Console.Write("{0}, ", resHeapSort[i].ToString("F0"));
-        }
+        Array.Copy(boxOfLists.listRand, bufferRandom, boxOfLists.listVShape.Length);
+        Array.Copy(boxOfLists.listAsc, bufferAscending, boxOfLists.listVShape.Length);
+        Array.Copy(boxOfLists.listDesc, bufferDescending, boxOfLists.listVShape.Length);
+        Array.Copy(boxOfLists.listStatic, bufferStatic, boxOfLists.listVShape.Length);
+        Array.Copy(boxOfLists.listVShape, bufferVShape, boxOfLists.listVShape.Length);
 
-        Console.WriteLine("");
-        Console.WriteLine("============");
+        timer.start();
+        HeapSort(bufferRandom);
+        timer.stop();
+        results[2, 0] = timer.result;
+        timer.set();
+        timer.start();
+        HeapSort(bufferAscending);
+        timer.stop();
+        results[2, 1] = timer.result;
+        timer.set();
+        timer.start();
+        HeapSort(bufferDescending);
+        timer.stop();
+        results[2, 2] = timer.result;
+        timer.set();
+        timer.start();
+        HeapSort(bufferStatic);
+        timer.stop();
+        results[2, 3] = timer.result;
+        timer.set();
+        timer.start();
+        HeapSort(bufferVShape);
+        timer.stop();
+        results[3, 4] = timer.result;
+        timer.set();       
 
-        int[] resCoctailSort = new int[boxOfLists.listVShape.Length];
-        Array.Copy(boxOfLists.listVShape, resCoctailSort, boxOfLists.listVShape.Length);
-        CocktailSort(resCoctailSort);
-        for(int i = 0; i < length; i++)
-        {
-            Console.Write("{0}, ", resCoctailSort[i].ToString("F0"));
-        }
+        Array.Copy(boxOfLists.listRand, bufferRandom, boxOfLists.listVShape.Length);
+        Array.Copy(boxOfLists.listAsc, bufferAscending, boxOfLists.listVShape.Length);
+        Array.Copy(boxOfLists.listDesc, bufferDescending, boxOfLists.listVShape.Length);
+        Array.Copy(boxOfLists.listStatic, bufferStatic, boxOfLists.listVShape.Length);
+        Array.Copy(boxOfLists.listVShape, bufferVShape, boxOfLists.listVShape.Length);
 
+        timer.start();
+        CocktailSort(bufferRandom);
+        timer.stop();
+        results[3, 0] = timer.result;
+        timer.set();
+        timer.start();
+        CocktailSort(bufferAscending);
+        timer.stop();
+        results[3, 1] = timer.result;
+        timer.set();
+        timer.start();
+        CocktailSort(bufferDescending);
+        timer.stop();
+        results[3, 2] = timer.result;
+        timer.set();
+        timer.start();
+        CocktailSort(bufferStatic);
+        timer.stop();
+        results[3, 3] = timer.result;
+        timer.set();
+        timer.start();
+        CocktailSort(bufferVShape);
+        timer.stop();
+        results[3, 4] = timer.result;
+        timer.set();       
 
-        // Console.WriteLine("");
-        // Console.WriteLine("============");
-        // int[] resQuickSortRec = new int[boxOfLists.listVShape.Length];
-        // Array.Copy(boxOfLists.listVShape, resQuickSortRec, boxOfLists.listVShape.Length);
-
-        // resQuickSortRec = QuickSRec(resQuickSortRec, resQuickSortRec[0], resQuickSortRec[length-1]);
-        // for(int i = 0; i < length; i++)
-        // {
-        //     Console.Write("{0}, ", resQuickSortRec[i].ToString("F0"));
-        // }
-
-        // Console.WriteLine("");
-        // Console.WriteLine("============");
-        // int[] resQuickSortIte = QuickSIte(boxOfLists.listVShape);
-        // for(int i = 0; i < length; i++)
-        // {
-        //     Console.Write("{0}, ", resQuickSortIte[i].ToString("F0"));
-        // }
-
-        Console.WriteLine("");
-        Console.WriteLine("============");
-        //Check
-        for(int i = 0; i < length; i++)
-        {
-            Console.Write("{0}, ", boxOfLists.listVShape[i].ToString("F0"));
-        }
-        Console.WriteLine("");
+        return results;
     }
+
 
 //Sorting Algorythms
 //Insertion Sort, Selection Sort, Heap Sort, Cocktail Sort
     //InsertionSort()
     static void InsertionSort (int[] t)
     {
-        for (int i = 1; i < length; i++)
+        for (int i = 1; i < t.Length; i++)
         {
             int j = i;                     // >i are sorted
             int Buf = t[j];           
@@ -372,7 +571,7 @@ class CsvHandler
         {
             writer.Flush();
             writer.Write(data);
-            writer.Write(",");
+            writer.Write(";");
             writer.Close();
         }
     }
