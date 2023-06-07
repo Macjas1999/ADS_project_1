@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/maciej/Desktop/C#/Proj3ADS/Algorithms-and-data-structures-course/Algorithms-and-data-structures-course.csproj": {}
+    "/home/maciej/Desktop/C#/Proj3ADS/Algorithms_and_data_structures_course/Algorithms-and-data-structures-course.csproj": {}
   },
   "projects": {
-    "/home/maciej/Desktop/C#/Proj3ADS/Algorithms-and-data-structures-course/Algorithms-and-data-structures-course.csproj": {
+    "/home/maciej/Desktop/C#/Proj3ADS/Algorithms_and_data_structures_course/Algorithms-and-data-structures-course.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/maciej/Desktop/C#/Proj3ADS/Algorithms-and-data-structures-course/Algorithms-and-data-structures-course.csproj",
+        "projectUniqueName": "/home/maciej/Desktop/C#/Proj3ADS/Algorithms_and_data_structures_course/Algorithms-and-data-structures-course.csproj",
         "projectName": "Algorithms-and-data-structures-course",
-        "projectPath": "/home/maciej/Desktop/C#/Proj3ADS/Algorithms-and-data-structures-course/Algorithms-and-data-structures-course.csproj",
+        "projectPath": "/home/maciej/Desktop/C#/Proj3ADS/Algorithms_and_data_structures_course/Algorithms-and-data-structures-course.csproj",
         "packagesPath": "/home/maciej/.nuget/packages/",
-        "outputPath": "/home/maciej/Desktop/C#/Proj3ADS/Algorithms-and-data-structures-course/obj/",
+        "outputPath": "/home/maciej/Desktop/C#/Proj3ADS/Algorithms_and_data_structures_course/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/maciej/.nuget/NuGet/NuGet.Config"

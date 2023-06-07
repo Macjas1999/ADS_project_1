@@ -10,47 +10,82 @@ class Program
     static void Main(string[] args)
     {
         length = 10;
-
-
         TargetContainer boxOfLists = new TargetContainer(length, 1);
+        Timer timer = new Timer();
+
 
         for(int i = 0; i < length; i++)
         {
             Console.Write("{0}, ", boxOfLists.listVShape[i].ToString("F0"));
         }
-        Console.WriteLine("");
 
-        //InsertionSort(boxOfLists.listVShape);
+        Console.WriteLine("");
         Console.WriteLine("============");
-        int[] resInserSort = InsertionSort(boxOfLists.listVShape);
+
+        int[] resInserSort = new int[boxOfLists.listVShape.Length];
+        Array.Copy(boxOfLists.listVShape, resInserSort, boxOfLists.listVShape.Length);
+        timer.start();
+        InsertionSort(resInserSort);
+        timer.stop();
         for(int i = 0; i < length; i++)
         {
             Console.Write("{0}, ", resInserSort[i].ToString("F0"));
         }
+        Console.Write(" {0}", timer.result.ToString("F8"));
         Console.WriteLine("");
         Console.WriteLine("============");
-        int[] resQuickSortRec = new int[boxOfLists.listVShape.Length];
-        Array.Copy(boxOfLists.listVShape, resQuickSortRec, boxOfLists.listVShape.Length);
 
-        resQuickSortRec = QuickSRec(resQuickSortRec, resQuickSortRec[0], resQuickSortRec[length-1]);
+        int[] resSelecSort = new int[boxOfLists.listVShape.Length];
+        Array.Copy(boxOfLists.listVShape, resSelecSort, boxOfLists.listVShape.Length);
+        SelectionSort(resSelecSort);
         for(int i = 0; i < length; i++)
         {
-            Console.Write("{0}, ", resQuickSortRec[i].ToString("F0"));
+            Console.Write("{0}, ", resSelecSort[i].ToString("F0"));
         }
+
         Console.WriteLine("");
         Console.WriteLine("============");
-        // int[] temp = new int[boxOfLists.listVShape.Length];
-        // for (int iter = 0; iter < length; iter++)
+
+        int[] resHeapSort = new int[boxOfLists.listVShape.Length];
+        Array.Copy(boxOfLists.listVShape, resHeapSort, boxOfLists.listVShape.Length);
+        HeapSort(resHeapSort);
+        for(int i = 0; i < length; i++)
+        {
+            Console.Write("{0}, ", resHeapSort[i].ToString("F0"));
+        }
+
+        Console.WriteLine("");
+        Console.WriteLine("============");
+
+        int[] resCoctailSort = new int[boxOfLists.listVShape.Length];
+        Array.Copy(boxOfLists.listVShape, resCoctailSort, boxOfLists.listVShape.Length);
+        CocktailSort(resCoctailSort);
+        for(int i = 0; i < length; i++)
+        {
+            Console.Write("{0}, ", resCoctailSort[i].ToString("F0"));
+        }
+
+
+        // Console.WriteLine("");
+        // Console.WriteLine("============");
+        // int[] resQuickSortRec = new int[boxOfLists.listVShape.Length];
+        // Array.Copy(boxOfLists.listVShape, resQuickSortRec, boxOfLists.listVShape.Length);
+
+        // resQuickSortRec = QuickSRec(resQuickSortRec, resQuickSortRec[0], resQuickSortRec[length-1]);
+        // for(int i = 0; i < length; i++)
         // {
-        //     temp[iter] = (int)boxOfLists.listVShape[iter];
+        //     Console.Write("{0}, ", resQuickSortRec[i].ToString("F0"));
         // }
-        int[] resQuickSortIte = QuickSIte(boxOfLists.listVShape);
-        for(int i = 0; i < length; i++)
-        {
-            Console.Write("{0}, ", resQuickSortIte[i].ToString("F0"));
-        }
-        Console.WriteLine("");
 
+        // Console.WriteLine("");
+        // Console.WriteLine("============");
+        // int[] resQuickSortIte = QuickSIte(boxOfLists.listVShape);
+        // for(int i = 0; i < length; i++)
+        // {
+        //     Console.Write("{0}, ", resQuickSortIte[i].ToString("F0"));
+        // }
+
+        Console.WriteLine("");
         Console.WriteLine("============");
         //Check
         for(int i = 0; i < length; i++)
@@ -58,19 +93,13 @@ class Program
             Console.Write("{0}, ", boxOfLists.listVShape[i].ToString("F0"));
         }
         Console.WriteLine("");
-
     }
 
-    //Sorting Algorythms
-
+//Sorting Algorythms
+//Insertion Sort, Selection Sort, Heap Sort, Cocktail Sort
     //InsertionSort()
-    static int[] InsertionSort (int[] source)
+    static void InsertionSort (int[] t)
     {
-        int[] t = new int[source.Length];
-        for (int inx = 0; inx < source.Length; inx++)
-        {
-            t[inx] = source[inx];
-        }
         for (int i = 1; i < length; i++)
         {
             int j = i;                     // >i are sorted
@@ -83,71 +112,87 @@ class Program
             }
         t[j] = Buf; // destination
         }
-        return t;
     }
 
-    //Quicksort recurent
-    // static void QuickSRec(uint[] t, int l, int p)
-    // {
-    //     // if (l >= p)
-    //     //     return;
+    // Heapsort
+    static void Heapify(int[] t, uint left, uint right)
+    { // procedura budowania/naprawiania kopca
+        uint i = left,
+        j = 2 * i + 1;
+        int buf = t[i]; // ojciec
+        while(j <= right) // przesiewamy do dna stogu
+        {
+            if(j < right) // wybieramy większego syna
+            if(t[j] < t[j+1])j++;
+            if(buf >= t[j])break;
+            t[i] = t[j];
+            i = j;
+            j = 2 * i + 1; // przechodzimy do dzieci syna
+        }
+        t[i] = buf;
+    }
 
-    //     uint x;
-    //     int i = l;
-    //     int j = p;
+    static void HeapSort(int[] t)
+    {
+        uint left = ((uint)t.Length / 2),
+        right = (uint)t.Length - 1;
+        while (left > 0) // budujemy kopiec idąc od połowy tablicy
+        {
+            left--;
+            Heapify(t, left, right);
+        }
+        while (right > 0) // rozbieramy kopiec
+        {
+            int buf = t[left];
+            t[left] = t[right];
+            t[right] = buf; // największy element
+            right--; // kopiec jest mniejszy
+            Heapify(t, left, right); // ale trzeba go naprawić
+        }
+    }
 
-    //     x = t[(l+p)/2];
-    //     // Body
-    //     do
-    //     {
-    //         while (t[i] < x) i++; 
-    //         while (x < t[j]) j--;
-    //         if (i <= j) 
-    //         {
-    //             uint buf = t[i];
-    //             t[i] = t[j];
-    //             t[j] = buf;
-    //             i++;
-    //             j--;
-    //         }
-    //     }while (i <= j);
+    //Selection Sort
+    static void SelectionSort(int[] t)
+    {
+        uint k;
+        for (uint i = 0; i < (t.Length - 1); i++)
+        {
+            int Buf = t[i]; // bierzemy i-ty element
+            k = i; // i jego indeks
+            for (uint j = i + 1; j < t.Length; j++)
+            if (t[j] < Buf) // szukamy najmniejszego z prawej
+            {
+                k = j;
+                Buf = t[j];
+            }
+            t[k] = t[i]; // zamieniamy i-ty z k-tym
+            t[i] = Buf;
+        }
+    }
 
+    //Coctail Sort
+    static void CocktailSort(int[] t)
+    {
+        int Left = 1, Right = t.Length - 1, k = t.Length-1;
+        do
+        {
+            for(int j = Right; j >= Left; j--) // przesiewanie od dołu
+            if(t[j - 1] > t[j])
+            {
+                int Buf=t[j-1]; t[j-1]=t[j]; t[j]=Buf;
+                k = j; // zamiana elementów i zapamiętanie indeksu
+            }
+            Left = k + 1; // zacieśnienie lewej granicy
+            for(int j = Left; j <= Right; j++) // przesiewanie od góry
+            if(t[j - 1] > t[j])
+            {
+                int Buf=t[j-1]; t[j-1]=t[j]; t[j]=Buf;
+                k = j; // zamiana elementów i zapamiętanie indeksu
+            }
+            Right = k - 1; // zacieśnienie prawej granicy
+        } while(Left <= Right);
+    }
 
-    //     if (l < j) QuickSRec(t, l, j);
-    //     if (i < p) QuickSRec(t, i, p);
-    // }
-    // static void QuickSRec(int[] t, int l, int r)
-    // {   
-    //     if (l >= r)
-    //         return;
-
-    //     int i = l - 1;
-    //     int j = r + 1;
-    //     int pivot = t[(l + r) / 2];
-
-    //     while (true)
-    //     {
-    //         do
-    //         {
-    //             i++;
-    //         } while (t[i] < pivot);
-
-    //         do
-    //         {
-    //             j--;
-    //         } while (t[j] > pivot);
-
-    //         if (i >= j)
-    //             break;
-
-    //         int temp = t[i];
-    //         t[i] = t[j];
-    //         t[j] = temp;
-    //     }
-
-    //     QuickSRec(t, l, j);
-    //     QuickSRec(t, j + 1, r);
-    // }
     static int[] QuickSRec(int[] t, int l, int p)
     {
         int i, j, x;
@@ -217,6 +262,36 @@ class Program
         return t;
     }
 
+}
+
+class Timer
+{
+    public long startTimestamp;
+    public long endTimestamp;
+    public double result;
+
+    public Timer()
+    {
+        this.startTimestamp = 0;
+        this.endTimestamp = 0;
+        this.result = 0;
+    }
+    public void start()
+    {
+        this.startTimestamp = Stopwatch.GetTimestamp();
+    }
+    public void stop()
+    {
+        this.endTimestamp = Stopwatch.GetTimestamp();
+        this.result = this.endTimestamp - this.startTimestamp;
+        this.result = this.result * (1.0 / Stopwatch.Frequency);
+    }
+    public void set()
+    {
+        this.startTimestamp = 0;
+        this.endTimestamp = 0;
+        this.result = 0;
+    }
 }
 
 
@@ -312,10 +387,3 @@ class CsvHandler
         }
     }
 }
-
-
-        // uint[] t = new uint[source.Count];
-        // for (int iter = 0; iter < source.Count; iter++)
-        // {
-        //     t[iter] = source[iter];
-        // }
