@@ -295,7 +295,6 @@ class Program
 
 
 //Sorting Algorythms
-//Insertion Sort, Selection Sort, Heap Sort, Cocktail Sort
     //InsertionSort()
     static void InsertionSort (int[] t)
     {
@@ -391,7 +390,9 @@ class Program
             Right = k - 1; // zacieśnienie prawej granicy
         } while(Left <= Right);
     }
-
+//
+//General I sort functions^
+//
     static int[] QuickSRec(int[] t, int l, int p)
     {
         int i, j, x;
@@ -460,9 +461,10 @@ class Program
         } while(sp >= 0); 
         return t;
     }
-
 }
-
+//
+// Testers
+//
 class Timer
 {
     public long startTimestamp;
@@ -492,9 +494,9 @@ class Timer
         this.result = 0;
     }
 }
-
-
-
+//
+//Data creator
+//
 class TargetContainer
 {
     public int[] listStatic;
