@@ -11,108 +11,6 @@ class Program
     {
 
         testsDataOutput();
-        // length = 20000;
-        // double[,] fourTestsResults = fourTests(length);
-
-        // for (int i = 0; i < 5; i++)
-        // {
-        //     for (int j = 0; j < 4; j++)
-        //     {
-        //         if (j == 3)
-        //         {
-        //             Console.WriteLine("{0}", fourTestsResults[j,i].ToString("F8"));
-
-        //         }
-        //         else
-        //         {
-        //             Console.Write("{0} |", fourTestsResults[j,i].ToString("F8"));
-        //         }
-        //     }
-        // }
-        // length = 10;
-        // TargetContainer boxOfLists = new TargetContainer(length, 1);
-        // Timer timer = new Timer();
-
-
-        // for(int i = 0; i < length; i++)
-        // {
-        //     Console.Write("{0}, ", boxOfLists.listVShape[i].ToString("F0"));
-        // }
-
-        // Console.WriteLine("");
-        // Console.WriteLine("============");
-
-        // int[] resInserSort = new int[boxOfLists.listVShape.Length];
-        // Array.Copy(boxOfLists.listVShape, resInserSort, boxOfLists.listVShape.Length);
-        // timer.start();
-        // InsertionSort(resInserSort);
-        // timer.stop();
-        // for(int i = 0; i < length; i++)
-        // {
-        //     Console.Write("{0}, ", resInserSort[i].ToString("F0"));
-        // }
-        // Console.Write(" {0}", timer.result.ToString("F8"));
-        // Console.WriteLine("");
-        // Console.WriteLine("============");
-
-        // int[] resSelecSort = new int[boxOfLists.listVShape.Length];
-        // Array.Copy(boxOfLists.listVShape, resSelecSort, boxOfLists.listVShape.Length);
-        // SelectionSort(resSelecSort);
-        // for(int i = 0; i < length; i++)
-        // {
-        //     Console.Write("{0}, ", resSelecSort[i].ToString("F0"));
-        // }
-
-        // Console.WriteLine("");
-        // Console.WriteLine("============");
-
-        // int[] resHeapSort = new int[boxOfLists.listVShape.Length];
-        // Array.Copy(boxOfLists.listVShape, resHeapSort, boxOfLists.listVShape.Length);
-        // HeapSort(resHeapSort);
-        // for(int i = 0; i < length; i++)
-        // {
-        //     Console.Write("{0}, ", resHeapSort[i].ToString("F0"));
-        // }
-
-        // Console.WriteLine("");
-        // Console.WriteLine("============");
-
-        // int[] resCoctailSort = new int[boxOfLists.listVShape.Length];
-        // Array.Copy(boxOfLists.listVShape, resCoctailSort, boxOfLists.listVShape.Length);
-        // CocktailSort(resCoctailSort);
-        // for(int i = 0; i < length; i++)
-        // {
-        //     Console.Write("{0}, ", resCoctailSort[i].ToString("F0"));
-        // }
-
-
-        // // Console.WriteLine("");
-        // // Console.WriteLine("============");
-        // // int[] resQuickSortRec = new int[boxOfLists.listVShape.Length];
-        // // Array.Copy(boxOfLists.listVShape, resQuickSortRec, boxOfLists.listVShape.Length);
-
-        // // resQuickSortRec = QuickSRec(resQuickSortRec, resQuickSortRec[0], resQuickSortRec[length-1]);
-        // // for(int i = 0; i < length; i++)
-        // // {
-        // //     Console.Write("{0}, ", resQuickSortRec[i].ToString("F0"));
-        // // }
-
-        // // Console.WriteLine("");
-        // // Console.WriteLine("============");
-        // // int[] resQuickSortIte = QuickSIte(boxOfLists.listVShape);
-        // // for(int i = 0; i < length; i++)
-        // // {
-        // //     Console.Write("{0}, ", resQuickSortIte[i].ToString("F0"));
-        // // }
-
-        // Console.WriteLine("");
-        // Console.WriteLine("============");
-        // //Check
-        // for(int i = 0; i < length; i++)
-        // {
-        //     Console.Write("{0}, ", boxOfLists.listVShape[i].ToString("F0"));
-        // }
-        // Console.WriteLine("");
     }
 //Run functions
 
@@ -393,7 +291,7 @@ class Program
 //
 //General I sort functions^
 //
-    static int[] QuickSRec(int[] t, int l, int p)
+    static void QuickSortRe(int[] t, int l, int p)
     {
         int i, j, x;
         i = l;
@@ -401,65 +299,47 @@ class Program
         x = t[(l+p)/2]; // (pseudo)mediana
         do
         {
-        while (t[i] < x) i++; // przesuwamy indeksy z lewej
-        while (x < t[j]) j--; // przesuwamy indeksy z prawej
-        if (i <= j) // jeśli nie minęliśmy się indeksami (koniec kroku)
-        { // zamieniamy elementy
-        int buf = t[i]; t[i] = t[j]; t[j] = buf;
-        i++; j--;
-        }
+            while (t[i] < x) i++; // przesuwamy indeksy z lewej
+            while (x < t[j]) j--; // przesuwamy indeksy z prawej
+            if (i <= j) // jeśli nie minęliśmy się indeksami (koniec kroku)
+            { // zamieniamy elementy
+                int buf = t[i]; t[i] = t[j]; t[j] = buf;
+                i++; j--;
+            }
         }
         while (i <= j);
-        if (l < j) t = QuickSRec(t, l, j); // sortujemy lewą część (jeśli jest)
-        if (i < p) t = QuickSRec(t, i, p); // sortujemy prawą część (jeśli jest)
-        return t;
-    } /* qsort() */
+        if (l < j) QuickSortRe(t, l, j); // sortujemy lewą część (jeśli jest)
+        if (i < p) QuickSortRe(t, i, p); // sortujemy prawą część (jeśli jest)
+    }
 
 
-    static int[] QuickSIte(int[] source)
-    { 
-        int[] t = new int[source.Length];
-        Array.Copy(source, t, source.Length);
-
-        int i, j, l, p;
-        int sp;
+//iteracyjna
+    static void QuickSortIt(int[] t)
+    {
+        int i, j, l, p, sp;
         int[] stos_l = new int[t.Length],
         stos_p = new int[t.Length]; // przechowywanie żądań podziału
-        sp=0; stos_l[sp] = 0; stos_p[sp] = t.Length -1; // rozpoczynamy od całej tablicy
+        sp=0; stos_l[sp] = 0; stos_p[sp] = t.Length - 1; // rozpoczynamy od całej tablicy
         do
         {
-            l = stos_l[sp];
-            p = stos_p[sp];
-            sp--; // pobieramy żądanie podziału
+            l=stos_l[sp]; p=stos_p[sp]; sp--; // pobieramy żądanie podziału
             do
-            { 
-                int x;
-                i = l;
-                j = p; 
-                x=(int)t[(l+p)/2];
+            { int x;
+                i=l; j=p; x=t[(l+p)/2]; // analogicznie do wersji rekurencyjnej
                 do
                 {
                     while (t[i] < x) i++;
                     while (x < t[j]) j--;
                     if (i <= j)
                     {
-                        int buf = t[i];
-                        t[i] = t[j];
-                        t[j] = buf;
-                        i++;
-                        j--;
+                        int buf = t[i]; t[i] = t[j]; t[j] = buf;
+                        i++; j--;
                     }
                 } while (i <= j);
-                if(i<p) 
-                {
-                    sp++;
-                    stos_l[sp] = i;
-                    stos_p[sp] = p; 
-                } 
-                p = j;
+                if(i<p) { sp++; stos_l[sp]=i; stos_p[sp]=p; } // ewentualnie dodajemy żądanie podziału
+                p=j;
             } while(l<p);
-        } while(sp >= 0); 
-        return t;
+        } while(sp>=0); // dopóki stos żądań nie będzie pusty
     }
 }
 //
