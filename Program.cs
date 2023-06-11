@@ -10,7 +10,9 @@ class Program
     static void Main(string[] args)
     {
 
-        testsDataOutput();
+        //testsDataOutput();
+
+        testQuicksortF();
     }
 //Run functions
 
@@ -191,6 +193,40 @@ class Program
         return results;
     }
 
+    static void testQuicksortF()
+    {
+        CsvHandler handler = new CsvHandler("outputQ.csv");
+        handler.appendLastInRow("Length ; Quicksort Recurrent ; Quicksort Iterative");
+
+        Timer timer = new Timer();
+        //double[] result = new double[];
+
+        for (int length = 45000; length <= 200000; length += 5000)
+        {
+            TargetContainer boxOfLists = new TargetContainer(length, 1);
+
+            int[] bufferRandom = new int[boxOfLists.listRand.Length];
+            Array.Copy(boxOfLists.listRand, bufferRandom, boxOfLists.listVShape.Length);
+
+            handler.appendNext(length.ToString("F0"));
+
+            timer.start();
+            // QuickSortRe(bufferRandom, bufferRandom[0], bufferRandom[bufferRandom.Length-1]);
+            QuickSortRe(bufferRandom, 0, bufferRandom.Length-1);
+            timer.stop();
+            handler.appendNext(timer.result.ToString("F8"));
+            timer.set();
+
+            Array.Copy(boxOfLists.listRand, bufferRandom, boxOfLists.listVShape.Length);
+
+            timer.start();
+            QuickSortIt(bufferRandom);
+            timer.stop();
+            handler.appendLastInRow(timer.result.ToString("F8"));
+            timer.set();
+        }
+    }
+
 
 //Sorting Algorythms
     //InsertionSort()
@@ -314,32 +350,81 @@ class Program
 
 
 //iteracyjna
+    //static void QuickSortIt(int[] t)
+    //{
+    //    int i, j, l, p, sp;
+    //    int[] stos_l = new int[t.Length],
+    //    stos_p = new int[t.Length]; // przechowywanie żądań podziału
+    //    sp=0; stos_l[sp] = 0; stos_p[sp] = t.Length - 1; // rozpoczynamy od całej tablicy
+    //    do
+    //    {
+    //        l=stos_l[sp]; p=stos_p[sp]; sp--; // pobieramy żądanie podziału
+    //        do
+    //        { int x;
+    //            i=l; j=p; x=t[(l+p)/2]; // analogicznie do wersji rekurencyjnej
+    //            do
+    //            {
+    //                while (t[i] < x) i++;
+    //                while (x < t[j]) j--;
+    //                if (i <= j)
+    //                {
+    //                    int buf = t[i]; t[i] = t[j]; t[j] = buf;
+    //                    i++; j--;
+    //                }
+    //            } while (i <= j);
+    //            if(i<p) { sp++; stos_l[sp]=i; stos_p[sp]=p; } // ewentualnie dodajemy żądanie podziału
+    //            p=j;
+    //        } while(l<p);
+    //    } while(sp>=0); // dopóki stos żądań nie będzie pusty
+    //}
     static void QuickSortIt(int[] t)
     {
-        int i, j, l, p, sp;
-        int[] stos_l = new int[t.Length],
-        stos_p = new int[t.Length]; // przechowywanie żądań podziału
-        sp=0; stos_l[sp] = 0; stos_p[sp] = t.Length - 1; // rozpoczynamy od całej tablicy
-        do
+        int i, j, l, p;
+        // Two separate heaps
+        Stack<int> heap_l = new Stack<int>();
+        Stack<int> heap_p = new Stack<int>(); 
+
+        heap_l.Push(0);
+        heap_p.Push(t.Length - 1);
+
+        while (heap_l.Count > 0)
         {
-            l=stos_l[sp]; p=stos_p[sp]; sp--; // pobieramy żądanie podziału
+            l = heap_l.Pop();
+            p = heap_p.Pop();
+
             do
-            { int x;
-                i=l; j=p; x=t[(l+p)/2]; // analogicznie do wersji rekurencyjnej
+            {
+                int x;
+                i = l;
+                j = p;
+                x = t[(l + p) / 2];
+
                 do
                 {
-                    while (t[i] < x) i++;
-                    while (x < t[j]) j--;
+                    while (t[i] < x)
+                        i++;
+                    while (x < t[j])
+                        j--;
+
                     if (i <= j)
                     {
-                        int buf = t[i]; t[i] = t[j]; t[j] = buf;
-                        i++; j--;
+                        int buf = t[i];
+                        t[i] = t[j];
+                        t[j] = buf;
+                        i++;
+                        j--;
                     }
                 } while (i <= j);
-                if(i<p) { sp++; stos_l[sp]=i; stos_p[sp]=p; } // ewentualnie dodajemy żądanie podziału
-                p=j;
-            } while(l<p);
-        } while(sp>=0); // dopóki stos żądań nie będzie pusty
+
+                if (i < p)
+                {
+                    heap_l.Push(i);
+                    heap_p.Push(p);
+                }
+
+                p = j;
+            } while (l < p);
+        }
     }
 }
 //
