@@ -9,13 +9,13 @@ class Program
     // static int length;
     static void Main(string[] args)
     {
-
-        //testsDataOutput();
+        testsDataOutput();
 
         testQuicksortF();
+
     }
 //Run functions
-
+//Run task I II
     static void testsDataOutput()
     {
         CsvHandler handler = new CsvHandler("output.csv");
@@ -192,7 +192,8 @@ class Program
 
         return results;
     }
-
+    
+//Run task III
     static void testQuicksortF()
     {
         CsvHandler handler = new CsvHandler("outputQ.csv");
@@ -201,7 +202,7 @@ class Program
         Timer timer = new Timer();
         //double[] result = new double[];
 
-        for (int length = 45000; length <= 200000; length += 5000)
+        for (int length = 10000000; length <= 75000000; length += 5000000)
         {
             TargetContainer boxOfLists = new TargetContainer(length, 1);
 
@@ -223,12 +224,15 @@ class Program
             QuickSortIt(bufferRandom);
             timer.stop();
             handler.appendLastInRow(timer.result.ToString("F8"));
-            timer.set();
+            timer.set();  
         }
     }
 
 
 //Sorting Algorythms
+//
+//Task I II
+//
     //InsertionSort()
     static void InsertionSort (int[] t)
     {
@@ -325,7 +329,7 @@ class Program
         } while(Left <= Right);
     }
 //
-//General I sort functions^
+//Task III
 //
     static void QuickSortRe(int[] t, int l, int p)
     {
@@ -348,35 +352,7 @@ class Program
         if (i < p) QuickSortRe(t, i, p); // sortujemy prawą część (jeśli jest)
     }
 
-
 //iteracyjna
-    //static void QuickSortIt(int[] t)
-    //{
-    //    int i, j, l, p, sp;
-    //    int[] stos_l = new int[t.Length],
-    //    stos_p = new int[t.Length]; // przechowywanie żądań podziału
-    //    sp=0; stos_l[sp] = 0; stos_p[sp] = t.Length - 1; // rozpoczynamy od całej tablicy
-    //    do
-    //    {
-    //        l=stos_l[sp]; p=stos_p[sp]; sp--; // pobieramy żądanie podziału
-    //        do
-    //        { int x;
-    //            i=l; j=p; x=t[(l+p)/2]; // analogicznie do wersji rekurencyjnej
-    //            do
-    //            {
-    //                while (t[i] < x) i++;
-    //                while (x < t[j]) j--;
-    //                if (i <= j)
-    //                {
-    //                    int buf = t[i]; t[i] = t[j]; t[j] = buf;
-    //                    i++; j--;
-    //                }
-    //            } while (i <= j);
-    //            if(i<p) { sp++; stos_l[sp]=i; stos_p[sp]=p; } // ewentualnie dodajemy żądanie podziału
-    //            p=j;
-    //        } while(l<p);
-    //    } while(sp>=0); // dopóki stos żądań nie będzie pusty
-    //}
     static void QuickSortIt(int[] t)
     {
         int i, j, l, p;
