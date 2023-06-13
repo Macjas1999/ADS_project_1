@@ -9,9 +9,10 @@ class Program
     // static int length;
     static void Main(string[] args)
     {
-        testsDataOutput();
+        //testsDataOutput();
 
-        testQuicksortF();
+        //testQuicksortF();
+
 
     }
 //Run functions
@@ -192,11 +193,44 @@ class Program
 
         return results;
     }
-    
+
 //Run task III
     static void testQuicksortF()
     {
         CsvHandler handler = new CsvHandler("outputQ.csv");
+        handler.appendLastInRow("Length ; Quicksort Recurrent ; Quicksort Iterative");
+
+        Timer timer = new Timer();
+        //double[] result = new double[];
+
+        for (int length = 10000000; length <= 75000000; length += 5000000)
+        {
+            TargetContainer boxOfLists = new TargetContainer(length, 1);
+
+            int[] bufferRandom = new int[boxOfLists.listRand.Length];
+            Array.Copy(boxOfLists.listRand, bufferRandom, boxOfLists.listVShape.Length);
+
+            handler.appendNext(length.ToString("F0"));
+
+            timer.start();
+            // QuickSortRe(bufferRandom, bufferRandom[0], bufferRandom[bufferRandom.Length-1]);
+            QuickSortRe(bufferRandom, 0, bufferRandom.Length-1);
+            timer.stop();
+            handler.appendNext(timer.result.ToString("F8"));
+            timer.set();
+
+            Array.Copy(boxOfLists.listRand, bufferRandom, boxOfLists.listVShape.Length);
+
+            timer.start();
+            QuickSortIt(bufferRandom);
+            timer.stop();
+            handler.appendLastInRow(timer.result.ToString("F8"));
+            timer.set();  
+        }
+    }
+    static void testQuicksortAShape()
+    {
+        CsvHandler handler = new CsvHandler("outputQASH.csv");
         handler.appendLastInRow("Length ; Quicksort Recurrent ; Quicksort Iterative");
 
         Timer timer = new Timer();
@@ -445,6 +479,7 @@ class TargetContainer
     public int[] listAsc;
     public int[] listDesc;
     public int[] listVShape;
+    public int[] listAShape;
 
     public TargetContainer(int length, int staticVal)
     {
@@ -483,6 +518,19 @@ class TargetContainer
         for (int i = 0; i < length/2; i++)
         {
             this.listVShape[delta++] = i;
+        }
+
+        this.listAShape = new int[length];
+
+        int delta2 = 0;
+        for (int i = 0; i <= length/2; i++)
+        {
+            this.listAShape[delta2++] = i;
+        }
+
+        for (int i = length/2 - 1; i > 0; i--)
+        {
+            this.listAShape[delta2++] = i;
         }
     }
 }
