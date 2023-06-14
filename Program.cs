@@ -9,9 +9,13 @@ class Program
     // static int length;
     static void Main(string[] args)
     {
-        //testsDataOutput();
+        Random rnd = new Random();
 
-        //testQuicksortF();
+        testsDataOutput();
+
+        testQuicksortF();
+
+        testQuicksortAShape(rnd);
 
 
     }
@@ -201,7 +205,6 @@ class Program
         handler.appendLastInRow("Length ; Quicksort Recurrent ; Quicksort Iterative");
 
         Timer timer = new Timer();
-        //double[] result = new double[];
 
         for (int length = 10000000; length <= 75000000; length += 5000000)
         {
@@ -213,7 +216,6 @@ class Program
             handler.appendNext(length.ToString("F0"));
 
             timer.start();
-            // QuickSortRe(bufferRandom, bufferRandom[0], bufferRandom[bufferRandom.Length-1]);
             QuickSortRe(bufferRandom, 0, bufferRandom.Length-1);
             timer.stop();
             handler.appendNext(timer.result.ToString("F8"));
@@ -228,34 +230,40 @@ class Program
             timer.set();  
         }
     }
-    static void testQuicksortAShape()
+    static void testQuicksortAShape(Random rnd)
     {
         CsvHandler handler = new CsvHandler("outputQASH.csv");
-        handler.appendLastInRow("Length ; Quicksort Recurrent ; Quicksort Iterative");
+        handler.appendLastInRow("Length ; Pseudo median ; Random key ; Rightmost key");
 
         Timer timer = new Timer();
-        //double[] result = new double[];
 
-        for (int length = 10000000; length <= 75000000; length += 5000000)
+        for (int length = 50000; length <= 150000; length += 5000)
         {
             TargetContainer boxOfLists = new TargetContainer(length, 1);
 
-            int[] bufferRandom = new int[boxOfLists.listRand.Length];
-            Array.Copy(boxOfLists.listRand, bufferRandom, boxOfLists.listVShape.Length);
+            int[] bufferAShape = new int[boxOfLists.listAShape.Length];
+            Array.Copy(boxOfLists.listAShape, bufferAShape, boxOfLists.listAShape.Length);
 
             handler.appendNext(length.ToString("F0"));
 
             timer.start();
-            // QuickSortRe(bufferRandom, bufferRandom[0], bufferRandom[bufferRandom.Length-1]);
-            QuickSortRe(bufferRandom, 0, bufferRandom.Length-1);
+            QuickSortRe(bufferAShape, 0, bufferAShape.Length-1);
             timer.stop();
             handler.appendNext(timer.result.ToString("F8"));
             timer.set();
 
-            Array.Copy(boxOfLists.listRand, bufferRandom, boxOfLists.listVShape.Length);
+            Array.Copy(boxOfLists.listAShape, bufferAShape, boxOfLists.listAShape.Length);
 
             timer.start();
-            QuickSortIt(bufferRandom);
+            QuickSortReRndK(bufferAShape, 0, bufferAShape.Length-1, rnd);
+            timer.stop();
+            handler.appendNext(timer.result.ToString("F8"));
+            timer.set();
+
+            Array.Copy(boxOfLists.listAShape, bufferAShape, boxOfLists.listAShape.Length);
+
+            timer.start();
+            QuickSortReRMK(bufferAShape, 0, bufferAShape.Length-1);
             timer.stop();
             handler.appendLastInRow(timer.result.ToString("F8"));
             timer.set();  
@@ -384,6 +392,50 @@ class Program
         while (i <= j);
         if (l < j) QuickSortRe(t, l, j); // sortujemy lewą część (jeśli jest)
         if (i < p) QuickSortRe(t, i, p); // sortujemy prawą część (jeśli jest)
+    }
+
+    //Random key
+    static void QuickSortReRndK(int[] t, int l, int p, Random rnd)
+    {
+        int i, j, x;
+        i = l;
+        j = p;
+        x = t[rnd.Next(l, p)]; // (pseudo)mediana
+        do
+        {
+            while (t[i] < x) i++; // przesuwamy indeksy z lewej
+            while (x < t[j]) j--; // przesuwamy indeksy z prawej
+            if (i <= j) // jeśli nie minęliśmy się indeksami (koniec kroku)
+            { // zamieniamy elementy
+                int buf = t[i]; t[i] = t[j]; t[j] = buf;
+                i++; j--;
+            }
+        }
+        while (i <= j);
+        if (l < j) QuickSortReRndK(t, l, j, rnd); // sortujemy lewą część (jeśli jest)
+        if (i < p) QuickSortReRndK(t, i, p, rnd); // sortujemy prawą część (jeśli jest)
+    }
+
+    //Rightmost key
+    static void QuickSortReRMK(int[] t, int l, int p)
+    {
+        int i, j, x;
+        i = l;
+        j = p;
+        x = t[p]; // (pseudo)mediana
+        do
+        {
+            while (t[i] < x) i++; // przesuwamy indeksy z lewej
+            while (x < t[j]) j--; // przesuwamy indeksy z prawej
+            if (i <= j) // jeśli nie minęliśmy się indeksami (koniec kroku)
+            { // zamieniamy elementy
+                int buf = t[i]; t[i] = t[j]; t[j] = buf;
+                i++; j--;
+            }
+        }
+        while (i <= j);
+        if (l < j) QuickSortReRMK(t, l, j); // sortujemy lewą część (jeśli jest)
+        if (i < p) QuickSortReRMK(t, i, p); // sortujemy prawą część (jeśli jest)
     }
 
 //iteracyjna
